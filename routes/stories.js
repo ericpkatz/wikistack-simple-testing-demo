@@ -4,14 +4,14 @@ const db = require('../db');
 module.exports = app;
 
 app.post('/', (req, res, next)=> {
-  db.models.User.findOne({ where: { name: req.body.name }})
-    .then( user => {
-      if(user) return user;
-      return db.models.User.create({ name: req.body.name });
-    })
-    .then( user => db.models.Story.create( { title: req.body.title, content: req.body.content, userId: user.id, tags: req.body.tags.split(',')}))
-    .then( story => res.redirect('/'))
-    .catch( e => next(e));
+  db.models.Story.createWithUser({
+    name: req.body.name,
+    title: req.body.title,
+    content: req.body.content,
+    tags: req.body.tags.split(',')
+  })
+  .then( story => res.redirect('/'))
+  .catch( e => next(e));
 });
 
 app.get('/tag/:tag', (req, res, next)=> {
