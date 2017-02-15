@@ -29,6 +29,13 @@ describe('Models', ()=> {
       expect(db.models.User).to.be.ok;
     });
 
+    describe('creating a user who exists', ()=> {
+      it('the user will not get created', (done)=> {
+        db.models.User.create({ name: 'prof'})
+          .catch( (e)=> done());
+      });
+    });
+
     describe('seeded data', ()=> {
       let users;
       beforeEach((done)=> {
