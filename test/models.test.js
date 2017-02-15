@@ -36,6 +36,24 @@ describe('Models', ()=> {
       });
     });
 
+    describe('deleting a user', ()=> {
+      beforeEach((done)=> {
+        db.models.User.findOne({ where: { name: 'prof'}})
+          .then( user => user.destroy())
+          .then( ()=> done())
+          .catch( e => done(e));
+      });
+
+      it('it deletes the users stories', (done)=> {
+        db.models.Story.findAll()
+          .then( stories => {
+            expect(stories.length).to.equal(2);
+            done();
+          })
+          .catch( (e) => done(e));
+      });
+    });
+
     describe('seeded data', ()=> {
       let users;
       beforeEach((done)=> {
